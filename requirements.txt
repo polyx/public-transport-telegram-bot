@@ -1,0 +1,12 @@
+aiohttp==1.2.0
+arrow==0.10.0
+async-timeout==1.1.0
+chardet==2.3.0
+multidict==2.1.4
+python-dateutil==2.6.0
+requests==2.13.0
+six==1.10.0
+telepot==10.4
+urllib3==1.20
+utm==0.4.1
+yarl==0.8.1
