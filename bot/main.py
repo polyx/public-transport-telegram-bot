@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 from pprint import pprint
@@ -42,11 +43,15 @@ def on_callback_query(msg):
     print('Callback Query:', query_id, from_id, query_data)
 
     bot.answerCallbackQuery(query_id, text='Got it')
-    bot.sendMessage(int(from_id), ruter.get_departures_by_id(int(query_data)))
+    departure_data = ruter.get_departures_by_id(int(query_data))
+    if len(departure_data) != 0:
+        bot.sendMessage(int(from_id), departure_data)
+    else:
+        bot.sendMessage(int(from_id), "Seems like there are no departures from this stop in near future...")
 
 
 if __name__ == '__main__':
-    bot = telepot.Bot(sys.argv[1])
+    bot = telepot.Bot(os.environ['TOKEN'])
 
     bot.message_loop({
         'chat': parse,

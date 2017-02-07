@@ -7,4 +7,8 @@ This bot is based on the telepot library for interacting with the telegram bot a
 
 ## How to run
 
-You need to pass your API token that you get from telegram to the `main.py`
+`docker run -it --rm -e TOKEN=[TELEGRAM TOKEN] ruter-telegram-bot`
+
+or run as daemon
+ 
+ `docker run -d -e TOKEN=[TELEGRAM TOKEN] --name <someName> ruter-telegram-bot`
