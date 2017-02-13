@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 from pprint import pprint
 
@@ -12,29 +11,31 @@ import ruter
 def parse(msg):
     markup = ReplyKeyboardMarkup(resize_keyboard=True,
                                  keyboard=[
-                                     [KeyboardButton(text='Text only')],
-                                     [KeyboardButton(text='Location', request_location=True)],
+                                     [KeyboardButton(text='Show nearby stops', request_location=True)],
                                  ])
 
     response = 'hi...'
     is_inline = False
+
     if 'text' in msg:
-        print("We got text!!!")
-        txt = msg['text']
-        response = f'you said: "{txt}"'
+        response = f'Send me your location so I can show you nearby stops.'
     elif 'location' in msg:
         response, stops = ruter.get_nearby_stops(msg['location'])
-        inline_kb_layout=[]
+        inline_kb_layout = []
+
         for id, name in stops.items():
-                inline_kb_layout.append([InlineKeyboardButton(text=name, callback_data=str(id))])
+            inline_kb_layout.append([InlineKeyboardButton(text=name, callback_data=str(id))])
+
         is_inline = True
         inline_kb = InlineKeyboardMarkup(inline_keyboard=inline_kb_layout)
+
     user_id = msg['from']['id']
+
     if is_inline:
-        message = bot.sendMessage(int(user_id), f'{response}', reply_markup=inline_kb)
+        bot.sendMessage(int(user_id), f'{response}', reply_markup=inline_kb)
     else:
-        message = bot.sendMessage(int(user_id), f'{response}', reply_markup=markup)
-    print(f"\n{message}\n")
+        bot.sendMessage(int(user_id), f'{response}', reply_markup=markup)
+
     pprint(msg)
 
 
@@ -44,6 +45,7 @@ def on_callback_query(msg):
 
     bot.answerCallbackQuery(query_id, text='Got it')
     departure_data = ruter.get_departures_by_id(int(query_data))
+
     if len(departure_data) != 0:
         bot.sendMessage(int(from_id), departure_data)
     else:
