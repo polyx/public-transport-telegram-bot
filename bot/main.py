@@ -53,7 +53,7 @@ def on_callback_query(msg):
 
 
 if __name__ == '__main__':
-    bot = telepot.Bot(os.environ['TOKEN'])
+    bot = telepot.Bot(os.environ['RTB'])
 
     bot.message_loop({
         'chat': parse,

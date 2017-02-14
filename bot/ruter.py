@@ -11,7 +11,7 @@ def get_nearby_stops(coordinates):
     y = coordinates['longitude']
 
     x, y = location.get_utm_location(x, y)
-    url = f"{BASE_API_URL}/Place/GetClosestPlacesExtension"
+    url = f"{BASE_API_URL}/Place/GetClosestStops"
 
     querystring = {
         "coordinates": f"(x={x},y={y})",
@@ -23,7 +23,8 @@ def get_nearby_stops(coordinates):
 
     nearby = "Nearby Stops:\n"
     stops = dict()
-    for stop in response.json()[0]['Stops']:
+
+    for stop in response.json():
         nearby += stop['Name']+'\n'
         stops[stop['ID']] = stop['Name']
 
@@ -38,7 +39,7 @@ def get_departures_by_id(stop_id=3012211):
     bus_schedule = ''
     counter = 0
     for departure in response.json():
-        if counter > 10:
+        if counter > 6:  # limit number of departures shown to the user so that it fits on screen hopefuly.
             break
         line = departure['MonitoredVehicleJourney']['PublishedLineName']  # Line name
         dest = departure['MonitoredVehicleJourney']['DestinationName']
@@ -46,7 +47,7 @@ def get_departures_by_id(stop_id=3012211):
         scheduled_arrival = departure['MonitoredVehicleJourney']['MonitoredCall']['AimedArrivalTime']  # scheduled
         expected_arrival = departure['MonitoredVehicleJourney']['MonitoredCall']['ExpectedArrivalTime']  # real arrival
 
-        bus_schedule += f'Line: {line}, ->{dest}\n'
+        bus_schedule += f'Line: {line}->{dest}\n'
         bus_schedule += f'Arrives in: {arrow.get(scheduled_arrival).humanize()}\n'
         bus_schedule += f'Maybe in: {arrow.get(expected_arrival).humanize()}\n'
         bus_schedule += '==========\n'
