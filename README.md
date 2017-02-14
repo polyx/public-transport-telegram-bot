@@ -6,7 +6,7 @@ This bot will accept your location and than give you a list of nearby stops. Upo
 This bot is based on the telepot library for interacting with the telegram bot api.
 
 ## How to run
-
+`docker build -t ruter-telegram-bot`
 `docker run -it --rm -e TOKEN=[TELEGRAM TOKEN] ruter-telegram-bot`
 
 or run as daemon
