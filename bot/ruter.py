@@ -16,7 +16,7 @@ def get_nearby_stops(coordinates):
     querystring = {
         "coordinates": f"(x={x},y={y})",
         "proposals": 5,
-        "maxdistance": 800
+        "maxdistance": 500
     }
 
     response = requests.request("GET", url, params=querystring)

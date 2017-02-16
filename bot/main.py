@@ -7,13 +7,13 @@ from telepot.namedtuple import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboa
 
 import ruter
 
+reply_kb = ReplyKeyboardMarkup(resize_keyboard=True,
+                               keyboard=[
+                                   [KeyboardButton(text='Show nearby stops', request_location=True)],
+                               ])
+
 
 def parse(msg):
-    markup = ReplyKeyboardMarkup(resize_keyboard=True,
-                                 keyboard=[
-                                     [KeyboardButton(text='Show nearby stops', request_location=True)],
-                                 ])
-
     response = 'hi...'
     is_inline = False
 
@@ -21,6 +21,7 @@ def parse(msg):
         response = f'Send me your location so I can show you nearby stops.'
     elif 'location' in msg:
         response, stops = ruter.get_nearby_stops(msg['location'])
+
         inline_kb_layout = []
 
         for id, name in stops.items():
@@ -34,7 +35,7 @@ def parse(msg):
     if is_inline:
         bot.sendMessage(int(user_id), f'{response}', reply_markup=inline_kb)
     else:
-        bot.sendMessage(int(user_id), f'{response}', reply_markup=markup)
+        bot.sendMessage(int(user_id), f'{response}', reply_markup=reply_kb)
 
     pprint(msg)
 
