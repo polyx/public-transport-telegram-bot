@@ -7,6 +7,6 @@ python-dateutil==2.6.0
 requests==2.13.0
 six==1.10.0
 telepot==10.4
-urllib3==1.20
+urllib3==1.26.5
 utm==0.4.1
 yarl==0.8.1
